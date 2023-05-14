@@ -1,5 +1,6 @@
 """ ResUNet_a construction (ResUNet_a D7 with conditioned multi-task learning for agricultural field boudnary delineation)
- "Diakogiannis, F.I., Waldner, F., Caccetta, P., Wu, C., 2020. Resunet-a: a deep learning framework for semantic segmentation of remotely sensed data. ISPRS J. Photogramm. Remote Sens. 162, 94-114." 
+ "Diakogiannis, F.I., Waldner, F., Caccetta, P., Wu, C., 2020. Resunet-a: a deep learning framework for semantic segmentation of remotely sensed data. ISPRS J. Photogramm. Remote Sens. 162, 94-114.
+ https://doi.org/10.1016/j.isprsjprs.2020.01.013" 
 """
 
 import torch 
@@ -153,7 +154,7 @@ class ResUnet_a(nn.Module):
                                                 nn.BatchNorm2d(32),
                                                 nn.ReLU(inplace=True))   
         self.distance_conv = nn.Conv2d(32,1,1)
-        self.semantic_block = nn.Conv2d(32,num_classes,1)
+        self.semantic_conv = nn.Conv2d(32,num_classes,1)
         self.boundary_conv = nn.Conv2d(32,1,1)
        
     def forward(self,x):
@@ -193,8 +194,8 @@ class ResUnet_a(nn.Module):
         boundary_feat = self.boundary_block(distance_feat+out)
         boundary = torch.sigmoid(self.boundary_conv(boundary_feat))
         
-        extent = self.extent_block(distance_feat+boundary_feat+out)
-        extent = self.extent_conv(extent)
+        extent = self.semantic_block(distance_feat+boundary_feat+out)
+        extent = self.semantic_conv(extent)
         
         if self.num_classes == 1:
           extent = torch.sigmoid(extent)
