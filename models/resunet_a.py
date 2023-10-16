@@ -27,9 +27,10 @@ class ResidualBlock(nn.Module):
         )
        
     def forward(self,x):
+        out = x
         for conv in self.conv_list:
-            x = x+conv(x)
-        return x
+            out = out+conv(x)
+        return out
 
 def conv_block(in_channels,out_channels):
     
