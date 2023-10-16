@@ -1,10 +1,15 @@
+""" RAUNet construction (RAUNet for rice-crayfish field extraction and agricultural field boudnary delineation)
+ "Cai, Z., Wei, H., Hu, Q., Zhou, W., Zhang, X., Jin, W., Wang, L., Yu, S., Wang, Z., Xu, B., Shi, Z., 
+ 2023. Learning spectral-spatial representations from VHR images for fine-scale crop type mapping: 
+ A case study of rice-crayfish field extraction in South China. ISPRS J. Photogramm. Remote Sens. 199, 28–39.
+ https://doi.org/10.1016/j. isprsjprs.2023.03.019." 
+"""
+
 import torch
 import torch.nn as nn
 from models.spatial_branch import InputConv
 from torchvision import models
 resnet=models.resnet50(pretrained=True)
-
-
 
 class upblock(nn.Module):
     def __init__(self,in_channels,out_channels,bilinear=True):
